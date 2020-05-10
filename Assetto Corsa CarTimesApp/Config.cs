@@ -19,8 +19,8 @@ namespace Assetto_Corsa_CarTimesApp
         {
             var currentConfig = JsonConvert.DeserializeObject<Config>(File.ReadAllText(string.Concat(Directory.GetCurrentDirectory(), "\\ConfigFile.json")));
 
-            this.AssettoCorsaRootPath = currentConfig.AssettoCorsaRootPath;
-            this.AssettoCrosaMyDocumentsPath = currentConfig.AssettoCrosaMyDocumentsPath;
+            AssettoCorsaRootPath = currentConfig.AssettoCorsaRootPath;
+            AssettoCrosaMyDocumentsPath = currentConfig.AssettoCrosaMyDocumentsPath;
         }
 
         public KeyValuePair<string, Color> IsAssettoCorsaExeFound()

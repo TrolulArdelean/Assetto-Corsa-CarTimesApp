@@ -5,13 +5,15 @@ namespace Assetto_Corsa_CarTimesApp.Models
 {
     public class Car
     {
-        public string FolderName { get; set; }
-        public CarUiJson UiProperties { get; set; }
+        public string FullFolderName { get; private set; }
+        public string CarNameInPersonalBestIni { get; private set; }
+        public CarUiJson UiProperties { get; private set; }
 
         public Car(string folderName)
         {
-            this.FolderName = folderName;
-            this.UiProperties = SetCarUiProperties(FolderName);
+            FullFolderName = folderName;
+            CarNameInPersonalBestIni = FullFolderName.Substring(FullFolderName.LastIndexOf("\\") + 1).ToUpper();
+            UiProperties = SetCarUiProperties(FullFolderName);
         }
 
         private CarUiJson SetCarUiProperties(string carFolderPath)

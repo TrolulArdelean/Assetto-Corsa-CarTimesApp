@@ -12,7 +12,7 @@ namespace Assetto_Corsa_CarTimesApp
     {
         private AssettoCorsaProperties assettoCorsaProperties = new AssettoCorsaProperties();
         private CarsContext carsContext = new CarsContext();
-        private TimesContext timesContext = new TimesContext();
+        private TimesContext timesContext;
         private Config config = new Config();
         private const string exeNotFound = "AssettoCorsa.exe was not found in the specified directory!";
         private const string exeFound = "AssettoCorsa.exe was found.";
@@ -23,8 +23,6 @@ namespace Assetto_Corsa_CarTimesApp
             config.ReadConfigFile();
             SetExeStatusForLabels();
             SetIniStatusForLabels();
-            assettoCorsaProperties.SetCarsPath(config.AssettoCorsaRootPath);
-            assettoCorsaProperties.SetPersonalBestPath(config.AssettoCrosaMyDocumentsPath);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -38,7 +36,7 @@ namespace Assetto_Corsa_CarTimesApp
             selectFolder.ShowDialog();
             config.SetAssettoCorsaRootPath(selectFolder.SelectedPath);
             SetExeStatusForLabels();
-            assettoCorsaProperties.SetCarsPath(config.AssettoCorsaRootPath);
+            assettoCorsaProperties.SetContentPaths(config.AssettoCorsaRootPath);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -71,17 +69,34 @@ namespace Assetto_Corsa_CarTimesApp
             label2.Text = exeStatus.Key;
             label2.ForeColor = exeStatus.Value;
             label4.Text = string.Concat("Current Path: ", config.AssettoCorsaRootPath);
+            if (exeStatus.Key.Equals(exeFound))
+            {
+                assettoCorsaProperties.SetContentPaths(config.AssettoCorsaRootPath);
+            }
         }
 
         public void SetIniStatusForLabels()
         {
-            var iniStatus = config.IsPersonalBestIniFound();
-            label3.Text = iniStatus.Key;
-            label3.ForeColor = iniStatus.Value;
-            label5.Text = string.Concat("Current Path: ", config.AssettoCrosaMyDocumentsPath);
-            if (iniStatus.Key.Equals("personalbest.ini was found."))
+            if (label2.Text.Equals(exeFound))
             {
-                timesContext.SetPersonalBestIni(config.AssettoCrosaMyDocumentsPath + "\\personalbest.ini");
+                var iniStatus = config.IsPersonalBestIniFound();
+                label3.Text = iniStatus.Key;
+                label3.ForeColor = iniStatus.Value;
+                label5.Text = string.Concat("Current Path: ", config.AssettoCrosaMyDocumentsPath);
+                label5.ForeColor = iniStatus.Value;
+                if (label2.Text.Equals(exeFound))
+                {
+                    if (iniStatus.Key.Equals("personalbest.ini was found."))
+                    {
+                        assettoCorsaProperties.SetPersonalBestPath(config.AssettoCrosaMyDocumentsPath);
+                        timesContext = new TimesContext(assettoCorsaProperties);
+                    }
+                }
+            }
+            else
+            {
+                label5.Text = "Select the Assetto Corsa root instalation folder first!";
+                label5.ForeColor = Color.Red;
             }
         }
     }
