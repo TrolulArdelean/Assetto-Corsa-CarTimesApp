@@ -23,7 +23,7 @@ namespace Assetto_Corsa_CarTimesApp
             this.AssettoCrosaMyDocumentsPath = currentConfig.AssettoCrosaMyDocumentsPath;
         }
 
-        public KeyValuePair<string, Color> isAssettoCorsaExeFound()
+        public KeyValuePair<string, Color> IsAssettoCorsaExeFound()
         {
             var exeStatus = "AssettoCorsa.exe was not found in the specified directory!";
             var color = Color.Red;
@@ -43,7 +43,7 @@ namespace Assetto_Corsa_CarTimesApp
             return new KeyValuePair<string, Color>(exeStatus, color);
         }
 
-        public KeyValuePair<string, Color> isPersonalBestIniFound()
+        public KeyValuePair<string, Color> IsPersonalBestIniFound()
         {
             var iniStatus = "personalbest.ini was not found in the specified directory!";
             var color = Color.Red;
@@ -66,11 +66,13 @@ namespace Assetto_Corsa_CarTimesApp
         public void SetAssettoCorsaRootPath(string newPath)
         {
             this.AssettoCorsaRootPath = newPath;
+            File.WriteAllText(string.Concat(Directory.GetCurrentDirectory(), "\\ConfigFile.json"), JsonConvert.SerializeObject(this));
         }
 
         public void SetAssettoCrosaMyDocumentsPath(string newPath)
         {
             this.AssettoCrosaMyDocumentsPath = newPath;
+            File.WriteAllText(string.Concat(Directory.GetCurrentDirectory(), "\\ConfigFile.json"), JsonConvert.SerializeObject(this));
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Assetto_Corsa_CarTimesApp.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Ini;
+using IniParser;
 using System.Collections.Generic;
 
 namespace Assetto_Corsa_CarTimesApp.LogicClasses
@@ -9,9 +8,9 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
     {
         public List<LapTime> lapTimes = new List<LapTime>();
 
-        public IniConfigurationSource personalBest = new IniConfigurationSource();
+        public FileIniDataParser parser = new FileIniDataParser();
 
-        public IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        public List<string> Tracks = new List<string>();
 
         public TimesContext()
         {
@@ -20,9 +19,7 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
 
         public void SetPersonalBestIni(string personalBestPath)
         {
-            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            personalBest.Path = personalBestPath;
-            var builded = personalBest.Build(configurationBuilder);
+            var data = parser.ReadFile(personalBestPath);
         }
     }
 }

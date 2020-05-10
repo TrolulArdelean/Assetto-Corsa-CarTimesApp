@@ -23,6 +23,8 @@ namespace Assetto_Corsa_CarTimesApp
             config.ReadConfigFile();
             SetExeStatusForLabels();
             SetIniStatusForLabels();
+            assettoCorsaProperties.SetCarsPath(config.AssettoCorsaRootPath);
+            assettoCorsaProperties.SetPersonalBestPath(config.AssettoCrosaMyDocumentsPath);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -65,7 +67,7 @@ namespace Assetto_Corsa_CarTimesApp
 
         public void SetExeStatusForLabels() 
         {
-            var exeStatus = config.isAssettoCorsaExeFound();
+            var exeStatus = config.IsAssettoCorsaExeFound();
             label2.Text = exeStatus.Key;
             label2.ForeColor = exeStatus.Value;
             label4.Text = string.Concat("Current Path: ", config.AssettoCorsaRootPath);
@@ -73,10 +75,14 @@ namespace Assetto_Corsa_CarTimesApp
 
         public void SetIniStatusForLabels()
         {
-            var iniStatus = config.isPersonalBestIniFound();
+            var iniStatus = config.IsPersonalBestIniFound();
             label3.Text = iniStatus.Key;
             label3.ForeColor = iniStatus.Value;
             label5.Text = string.Concat("Current Path: ", config.AssettoCrosaMyDocumentsPath);
+            if (iniStatus.Key.Equals("personalbest.ini was found."))
+            {
+                timesContext.SetPersonalBestIni(config.AssettoCrosaMyDocumentsPath + "\\personalbest.ini");
+            }
         }
     }
 }
