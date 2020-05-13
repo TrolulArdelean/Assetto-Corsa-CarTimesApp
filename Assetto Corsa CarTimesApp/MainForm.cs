@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Assetto_Corsa_CarTimesApp.LogicClasses;
+using Assetto_Corsa_CarTimesApp.Models;
 
 namespace Assetto_Corsa_CarTimesApp
 {
@@ -17,6 +19,8 @@ namespace Assetto_Corsa_CarTimesApp
         private List<Button> carActionsButtons = new List<Button>();
         private List<ComboBox> twoCarComparerComboBoxes = new List<ComboBox>();
         private List<Button> basicBeforeComparissonButtons = new List<Button>();
+        private int numberOfCarsToCompare;
+        private List<Car> selectedCars;
 
         public MainForm()
         {
@@ -74,26 +78,76 @@ namespace Assetto_Corsa_CarTimesApp
 
         private void button4_Click(object sender, EventArgs e)
         {
+            numberOfCarsToCompare = (int)ComparrisonType.TwoCars;
+            selectedCars = new Car[2].ToList();
             EnableButtons(basicBeforeComparissonButtons);
             EnableComboBoxes(twoCarComparerComboBoxes);
+            button5.Enabled = false;
             comboBox1.Items.AddRange(carsContext.CarBrands.ToArray());
             comboBox3.Items.AddRange(carsContext.CarBrands.ToArray());
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            DisableComboboxes(twoCarComparerComboBoxes);
+            DisableComboBoxes(twoCarComparerComboBoxes);
             DisableButtons(basicBeforeComparissonButtons);
+            selectedCars.Clear();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBox2.Text = null;
+            comboBox2.Items.Clear();
             comboBox2.Items.AddRange(carsContext.GetCarsByBrandName(comboBox1.Text));
         }
 
         private void comboBox3_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+            comboBox4.Text = null;
+            comboBox4.Items.Clear();
             comboBox4.Items.AddRange(carsContext.GetCarsByBrandName(comboBox3.Text));
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedCars[0] = carsContext.FindCarByBrandAndModelName(comboBox1.Text, comboBox2.Text);
+
+            if (CheckThatTheComboBoxesHaveValues(twoCarComparerComboBoxes) && CheckSelectedCarValues(selectedCars)) 
+            {
+                button5.Enabled = true;
+            }
+            else
+            {
+                button5.Enabled = false;
+            }
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedCars[1] = carsContext.FindCarByBrandAndModelName(comboBox1.Text, comboBox2.Text);
+
+            if (CheckThatTheComboBoxesHaveValues(twoCarComparerComboBoxes) && CheckSelectedCarValues(selectedCars))
+            {
+                button5.Enabled = true;
+            }
+            else
+            {
+                button5.Enabled = false;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            DisableButtons(basicBeforeComparissonButtons);
+            DisableComboBoxes(twoCarComparerComboBoxes);
+
+            EnableButtons(new Button[] { button4 }.ToList());
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            EnableButtons(basicBeforeComparissonButtons);
+            EnableComboBoxes(twoCarComparerComboBoxes);
         }
 
         public void SetExeStatusForLabels() 
@@ -174,7 +228,7 @@ namespace Assetto_Corsa_CarTimesApp
             }
         }
 
-        public void DisableComboboxes(List<ComboBox> requiredComboBoxes)
+        public void DisableComboBoxes(List<ComboBox> requiredComboBoxes)
         {
             foreach (var comboBox in requiredComboBoxes)
             {
@@ -201,6 +255,32 @@ namespace Assetto_Corsa_CarTimesApp
             twoCarComparerComboBoxes.Add(comboBox2);
             twoCarComparerComboBoxes.Add(comboBox3);
             twoCarComparerComboBoxes.Add(comboBox4);
+        }
+
+        public bool CheckThatTheComboBoxesHaveValues(List<ComboBox> comboBoxes)
+        {
+            foreach (var comboBox in comboBoxes)
+            {
+                if (comboBox.Text.Equals(null) || comboBox.Text.Equals("Select Car Brand first"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public bool CheckSelectedCarValues(List<Car> selectedCars)
+        {
+            foreach (var car in selectedCars)
+            {
+                if (car == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

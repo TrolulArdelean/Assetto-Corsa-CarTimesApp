@@ -45,6 +45,7 @@
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.backButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -167,8 +168,9 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(281, 21);
             this.comboBox2.TabIndex = 12;
-            this.comboBox2.Text = "Select Car Brand 1 first";
+            this.comboBox2.Text = "Select Car Brand first";
             this.comboBox2.Visible = false;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // comboBox3
             // 
@@ -190,19 +192,21 @@
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(281, 21);
             this.comboBox4.TabIndex = 14;
-            this.comboBox4.Text = "Select Car Brand 2 first";
+            this.comboBox4.Text = "Select Car Brand first";
             this.comboBox4.Visible = false;
+            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
             // button5
             // 
             this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(456, 271);
+            this.button5.Location = new System.Drawing.Point(456, 280);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(147, 23);
             this.button5.TabIndex = 15;
             this.button5.Text = "Compare selected cars";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Visible = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -216,11 +220,24 @@
             this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // backButton
+            // 
+            this.backButton.Enabled = false;
+            this.backButton.Location = new System.Drawing.Point(771, 545);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(75, 23);
+            this.backButton.TabIndex = 17;
+            this.backButton.Text = "Back";
+            this.backButton.UseVisualStyleBackColor = true;
+            this.backButton.Visible = false;
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1084, 761);
+            this.Controls.Add(this.backButton);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.comboBox4);
@@ -264,6 +281,7 @@
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button backButton;
     }
 }
 

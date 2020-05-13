@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="LogicClasses\AssettoProperties.cs" />
+    <Compile Include="LogicClasses\ComparrisonType.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

@@ -74,5 +74,10 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
 
             return modelNames.ToArray();
         }
+
+        public Car FindCarByBrandAndModelName(string brand, string model)
+        {
+            return AllCars.Find(c => c.UiProperties.Brand == brand && c.UiProperties.Name == model);
+        }
     }
 }
