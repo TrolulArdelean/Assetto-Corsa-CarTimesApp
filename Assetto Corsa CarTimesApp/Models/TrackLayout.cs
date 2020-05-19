@@ -2,7 +2,7 @@
 
 namespace Assetto_Corsa_CarTimesApp.Models
 {
-    class TrackLayout
+    public class TrackLayout
     {
         [JsonProperty("name")]
         public string Name { get; private set; }

@@ -8,11 +8,13 @@ using System.Linq;
 
 namespace Assetto_Corsa_CarTimesApp.LogicClasses
 {
-    class TimesContext
+    public class TimesContext
     {
         public FileIniDataParser parser = new FileIniDataParser();
 
         private AssettoCorsaProperties AssettoCorsaProperties { get; set; }
+
+        private List<SectionData> IniSections { get; set; }
 
         public List<string> TracksInIni { get; private set; }
 
@@ -21,21 +23,20 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
         public TimesContext(AssettoCorsaProperties assettoCorsaProperties)
         {
             AssettoCorsaProperties = assettoCorsaProperties;
-            SetPersonalBestIni();
+            ReadPersonalBestIni();
+            GetTrackNamesInPersonalBestIni(IniSections);
             GetTrackLayouts();
         }
 
-        private void SetPersonalBestIni()
+        private void ReadPersonalBestIni()
         {
             var iniData = parser.ReadFile(AssettoCorsaProperties.PersonalBestIniPath + "\\personalbest.ini");
-            var iniSections = iniData.Sections.ToList();
-
-            TracksInIni = GetTrackNamesInPersonalBestIni(iniSections);
+            IniSections = iniData.Sections.ToList();
         }
 
         private List<string> GetTrackNamesInPersonalBestIni(List<SectionData> iniSections)
         {
-            List<string> trackNames = new List<string>();
+            var trackNames = new List<string>();
 
             foreach (var section in iniSections)
             {
@@ -89,6 +90,13 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
                     }
                 }
             }
+        }
+
+        public List<LapTime> GetLapTimesForCar(Car car)
+        {
+            var lapTimes = new List<LapTime>();
+
+            var laptimesInPrsonalBestIni = IniSections.FindAll(s => s.SectionName.Contains(string.Concat(car.CarNameInPersonalBestIni, "@")));
         }
     }
 }

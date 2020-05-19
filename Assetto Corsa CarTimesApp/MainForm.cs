@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Assetto_Corsa_CarTimesApp.LogicClasses;
+using Assetto_Corsa_CarTimesApp.LogicClasses.ComparrisonTypes;
 using Assetto_Corsa_CarTimesApp.Models;
 
 namespace Assetto_Corsa_CarTimesApp
@@ -19,7 +20,7 @@ namespace Assetto_Corsa_CarTimesApp
         private List<Button> carActionsButtons = new List<Button>();
         private List<ComboBox> twoCarComparerComboBoxes = new List<ComboBox>();
         private List<Button> basicBeforeComparissonButtons = new List<Button>();
-        private int numberOfCarsToCompare;
+        private TwoCarComparisson twoCarComparisson;
         private List<Car> selectedCars;
 
         public MainForm()
@@ -78,7 +79,6 @@ namespace Assetto_Corsa_CarTimesApp
 
         private void button4_Click(object sender, EventArgs e)
         {
-            numberOfCarsToCompare = (int)ComparrisonType.TwoCars;
             selectedCars = new Car[2].ToList();
             EnableButtons(basicBeforeComparissonButtons);
             EnableComboBoxes(twoCarComparerComboBoxes);
@@ -142,6 +142,8 @@ namespace Assetto_Corsa_CarTimesApp
             DisableComboBoxes(twoCarComparerComboBoxes);
 
             EnableButtons(new Button[] { button4 }.ToList());
+
+            twoCarComparisson = new TwoCarComparisson(timesContext);
         }
 
         private void backButton_Click(object sender, EventArgs e)
