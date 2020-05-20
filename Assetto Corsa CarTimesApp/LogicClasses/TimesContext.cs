@@ -16,15 +16,12 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
 
         private List<SectionData> IniSections { get; set; }
 
-        public List<string> TracksInIni { get; private set; }
-
         public List<TrackLayout> TrackLayouts = new List<TrackLayout>();
 
         public TimesContext(AssettoCorsaProperties assettoCorsaProperties)
         {
             AssettoCorsaProperties = assettoCorsaProperties;
             ReadPersonalBestIni();
-            GetTrackNamesInPersonalBestIni(IniSections);
             GetTrackLayouts();
         }
 
@@ -34,21 +31,9 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
             IniSections = iniData.Sections.ToList();
         }
 
-        private List<string> GetTrackNamesInPersonalBestIni(List<SectionData> iniSections)
+        private string GetTrackNameInPersonalBestIni(SectionData section)
         {
-            var trackNames = new List<string>();
-
-            foreach (var section in iniSections)
-            {
-                var trackName = section.SectionName.Substring(section.SectionName.IndexOf("@"));
-
-                if (!trackNames.Contains(trackName))
-                {
-                    trackNames.Add(trackName);
-                }
-            }
-
-            return trackNames;
+            return section.SectionName.Substring(section.SectionName.IndexOf("@"));
         }
 
         private void GetTrackLayouts()
@@ -96,7 +81,15 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
         {
             var lapTimes = new List<LapTime>();
 
-            var laptimesInPrsonalBestIni = IniSections.FindAll(s => s.SectionName.Contains(string.Concat(car.CarNameInPersonalBestIni, "@")));
+            var sectionsForCarInIni = IniSections.FindAll(s => s.SectionName.Contains(string.Concat(car.CarNameInPersonalBestIni, "@")));
+
+            foreach (var section in sectionsForCarInIni)
+            {
+                var trackLayout = TrackLayouts.Single(t => t.TrackNameInPersonalBestIni.Equals(GetTrackNameInPersonalBestIni(section)));
+                lapTimes.Add(new LapTime(section, trackLayout));
+            }
+
+            return lapTimes;
         }
     }
 }
