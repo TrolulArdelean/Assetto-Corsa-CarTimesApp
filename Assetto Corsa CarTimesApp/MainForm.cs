@@ -124,7 +124,7 @@ namespace Assetto_Corsa_CarTimesApp
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            selectedCars[1] = carsContext.FindCarByBrandAndModelName(comboBox1.Text, comboBox2.Text);
+            selectedCars[1] = carsContext.FindCarByBrandAndModelName(comboBox3.Text, comboBox4.Text);
 
             if (CheckThatTheComboBoxesHaveValues(twoCarComparerComboBoxes) && CheckSelectedCarValues(selectedCars))
             {
@@ -139,17 +139,21 @@ namespace Assetto_Corsa_CarTimesApp
         private void button5_Click(object sender, EventArgs e)
         {
             DisableButtons(basicBeforeComparissonButtons);
+            DisableButton(button4);
             DisableComboBoxes(twoCarComparerComboBoxes);
 
-            EnableButtons(new Button[] { button4 }.ToList());
+            EnableButton(backButton);
 
-            twoCarComparisson = new TwoCarComparisson(timesContext);
+            twoCarComparisson = new TwoCarComparisson(timesContext, selectedCars[0], selectedCars[1]);
         }
 
         private void backButton_Click(object sender, EventArgs e)
         {
             EnableButtons(basicBeforeComparissonButtons);
+            EnableButton(button4);
             EnableComboBoxes(twoCarComparerComboBoxes);
+
+            DisableButton(backButton);
         }
 
         public void SetExeStatusForLabels() 
@@ -212,6 +216,12 @@ namespace Assetto_Corsa_CarTimesApp
             }
         }
 
+        public void EnableButton(Button requiredButton)
+        {
+            requiredButton.Visible = true;
+            requiredButton.Enabled = true;
+        }
+
         public void DisableButtons(List<Button> requiredButtons)
         {
             foreach (var button in requiredButtons)
@@ -219,6 +229,12 @@ namespace Assetto_Corsa_CarTimesApp
                 button.Visible = false;
                 button.Enabled = false;
             }
+        }
+
+        public void DisableButton(Button requiredButton)
+        {
+            requiredButton.Visible = false;
+            requiredButton.Enabled = false;
         }
 
         public void EnableComboBoxes(List<ComboBox> requiredComboBoxes)

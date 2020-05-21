@@ -33,7 +33,7 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
 
         private string GetTrackNameInPersonalBestIni(SectionData section)
         {
-            return section.SectionName.Substring(section.SectionName.IndexOf("@"));
+            return section.SectionName.Substring(section.SectionName.IndexOf("@") + 1);
         }
 
         private void GetTrackLayouts()
@@ -85,7 +85,13 @@ namespace Assetto_Corsa_CarTimesApp.LogicClasses
 
             foreach (var section in sectionsForCarInIni)
             {
-                var trackLayout = TrackLayouts.Single(t => t.TrackNameInPersonalBestIni.Equals(GetTrackNameInPersonalBestIni(section)));
+                var trackLayout = TrackLayouts.Find(t => t.TrackNameInPersonalBestIni.Equals(GetTrackNameInPersonalBestIni(section)));
+
+                if (trackLayout == null)
+                {
+                    continue;
+                }
+
                 lapTimes.Add(new LapTime(section, trackLayout));
             }
 

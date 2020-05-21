@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="LogicClasses\CarsContext.cs" />
     <Compile Include="Models\CarUiJson.cs" />
+    <Compile Include="Models\ComparrisonData.cs" />
     <Compile Include="Models\LapTime.cs" />
     <Compile Include="LogicClasses\TimesContext.cs" />
     <Compile Include="Models\TrackLayout.cs" />
