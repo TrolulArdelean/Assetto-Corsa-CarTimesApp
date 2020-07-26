@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Assetto_Corsa_CarTimesApp.LogicClasses;
 using Assetto_Corsa_CarTimesApp.LogicClasses.ComparrisonTypes;
@@ -145,6 +147,9 @@ namespace Assetto_Corsa_CarTimesApp
             EnableButton(backButton);
 
             twoCarComparisson = new TwoCarComparisson(timesContext, selectedCars[0], selectedCars[1]);
+            TwoCarComparison_Panel.Visible = true;
+
+            AddRequiredDataToTwoCarComparer();
         }
 
         private void backButton_Click(object sender, EventArgs e)
@@ -152,6 +157,8 @@ namespace Assetto_Corsa_CarTimesApp
             EnableButtons(basicBeforeComparissonButtons);
             EnableButton(button4);
             EnableComboBoxes(twoCarComparerComboBoxes);
+            TwoCarComparison_Panel.Visible = false;
+            button5.Enabled = false;
 
             DisableButton(backButton);
         }
@@ -279,7 +286,7 @@ namespace Assetto_Corsa_CarTimesApp
         {
             foreach (var comboBox in comboBoxes)
             {
-                if (comboBox.Text.Equals(null) || comboBox.Text.Equals("Select Car Brand first"))
+                if (comboBox.Text.Equals(null) || comboBox.Text.Equals("Select Car Brand first") || comboBox.Text.Equals(""))
                 {
                     return false;
                 }
@@ -299,6 +306,78 @@ namespace Assetto_Corsa_CarTimesApp
             }
 
             return true;
+        }
+
+        public void AddRequiredDataToTwoCarComparer()
+        {
+            CarOneName_Textbox.Text = twoCarComparisson.CarOneData.Car.UiProperties.Name;
+            CarTwoName_Textbox.Text = twoCarComparisson.CarTwoData.Car.UiProperties.Name;
+
+            AddDataToResultOverview();
+            AddDataToComparisonTables();
+        }
+
+        public void AddDataToResultOverview()
+        {
+            double avergeDifferencePerTrack = twoCarComparisson.TotalDifference / twoCarComparisson.CommonTracksFound;
+            string carOneName = twoCarComparisson.CarOneData.Car.UiProperties.Name;
+            string carTwoName = twoCarComparisson.CarTwoData.Car.UiProperties.Name;
+
+            if (twoCarComparisson.CommonTracksFound == 0)
+            {
+                ResultsOverview_Textbox.Text = "No laptimes for the same track were found for the selected cars. \nDrive them on the same track to get some results.";
+            }
+            else if (twoCarComparisson.TotalDifference < 0)
+            {
+                ResultsOverview_Textbox.Text = ($"Common track layouts found: {twoCarComparisson.CommonTracksFound}. \n" +
+                    $"{carOneName} is faster than {carTwoName} with a combined time of {twoCarComparisson.TotalDifference * -1:F3} seconds" +
+                    $" and an average of {avergeDifferencePerTrack * -1:F3} seconds per track.");
+            }
+            else if (twoCarComparisson.TotalDifference > 0)
+            {
+                ResultsOverview_Textbox.Text = ($"Common track layouts found: {twoCarComparisson.CommonTracksFound}. \n" +
+                    $"{carTwoName} is faster than {carOneName} with a combined time of {twoCarComparisson.TotalDifference:F3} seconds" +
+                    $" and an average of {avergeDifferencePerTrack:F3} seconds per track.");
+            }
+            else if (twoCarComparisson.TotalDifference == 0)
+            {
+                ResultsOverview_Textbox.Text = ($"Both cars are equally fast.");
+            }
+        }
+
+        public void AddDataToComparisonTables()
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add("Track");
+            table.Columns.Add(twoCarComparisson.CarOneData.Car.UiProperties.Name);
+            table.Columns.Add("Difference");
+            table.Columns.Add(twoCarComparisson.CarTwoData.Car.UiProperties.Name);
+
+            foreach (var commonTimes in twoCarComparisson.CommonTrackLapTimes)
+            {
+                string trackName = commonTimes.Key.Track.Name;
+                string carOneTime = $"{commonTimes.Key.Time.Minutes}:{commonTimes.Key.Time.Seconds:F3}";
+                string carTwoTime = $"{commonTimes.Value.Time.Minutes}:{commonTimes.Value.Time.Seconds:F3}";
+                string difference = twoCarComparisson.PerTrackDifferences.Single(d => d.Key == commonTimes.Key.Track).Value.ToString("F3");
+
+                if (carOneTime.IndexOf(".") == carOneTime.IndexOf(":") + 2)
+                {
+                    carOneTime = carOneTime.Substring(0, carOneTime.IndexOf(":") + 1) + "0" + carOneTime.Substring(carOneTime.IndexOf(":") + 1);
+                }
+
+                if (carTwoTime.IndexOf(".") == carTwoTime.IndexOf(":") + 2)
+                {
+                    carTwoTime = carTwoTime.Substring(0, carTwoTime.IndexOf(":") + 1) + "0" + carTwoTime.Substring(carTwoTime.IndexOf(":") + 1);
+                }
+
+                table.Rows.Add(trackName, carOneTime, difference, carTwoTime);
+            }
+
+            dataGridView1.DataSource = table;
+            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+            {
+                dataGridView1.Columns[i].Width = dataGridView1.Width/4 - 10;
+            }
         }
     }
 }

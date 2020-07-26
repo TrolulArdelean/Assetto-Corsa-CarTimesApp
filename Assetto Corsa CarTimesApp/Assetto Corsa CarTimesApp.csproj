@@ -70,6 +70,7 @@
     <Compile Include="Models\ComparrisonData.cs" />
     <Compile Include="Models\LapTime.cs" />
     <Compile Include="LogicClasses\TimesContext.cs" />
+    <Compile Include="Models\Time.cs" />
     <Compile Include="Models\TrackLayout.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +90,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Assetto_Corsa_CarTimesApp.LogicClasses.ComparrisonTypes.TwoCarComparisson.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -101,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HelperResources\mockup_TwoCarComparer.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
