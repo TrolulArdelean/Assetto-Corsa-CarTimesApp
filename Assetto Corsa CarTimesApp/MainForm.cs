@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Assetto_Corsa_CarTimesApp.LogicClasses;
 using Assetto_Corsa_CarTimesApp.LogicClasses.ComparrisonTypes;
@@ -218,8 +217,7 @@ namespace Assetto_Corsa_CarTimesApp
         {
             foreach (var button in requiredButtons)
             {
-                button.Enabled = true;
-                button.Visible = true;
+                EnableButton(button);
             }
         }
 
@@ -233,8 +231,7 @@ namespace Assetto_Corsa_CarTimesApp
         {
             foreach (var button in requiredButtons)
             {
-                button.Visible = false;
-                button.Enabled = false;
+                DisableButton(button);
             }
         }
 

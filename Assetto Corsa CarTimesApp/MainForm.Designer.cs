@@ -48,18 +48,19 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.TwoCarComparison_Panel = new System.Windows.Forms.Panel();
-            this.commonTrackLapTimesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.ResultsOverview_Textbox = new System.Windows.Forms.TextBox();
             this.CarTwoName_Textbox = new System.Windows.Forms.TextBox();
             this.CarOneName_Textbox = new System.Windows.Forms.TextBox();
             this.TwoCarComparer_Disclaimer = new System.Windows.Forms.TextBox();
+            this.commonTrackLapTimesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.twoCarComparissonBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.twoCarComparissonBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.TwoCarComparison_Panel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.commonTrackLapTimesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.commonTrackLapTimesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.twoCarComparissonBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -260,10 +261,18 @@
             this.TwoCarComparison_Panel.TabIndex = 18;
             this.TwoCarComparison_Panel.Visible = false;
             // 
-            // commonTrackLapTimesBindingSource
+            // dataGridView1
             // 
-            this.commonTrackLapTimesBindingSource.DataMember = "CommonTrackLapTimes";
-            this.commonTrackLapTimesBindingSource.DataSource = this.twoCarComparissonBindingSource;
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(112, 111);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidth = 20;
+            this.dataGridView1.Size = new System.Drawing.Size(847, 401);
+            this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // ResultsOverview_Textbox
             // 
@@ -298,26 +307,19 @@
     "meaning that if you see negative values Car 1 is faster and if you see positive " +
     "values Car 2 is faster.";
             // 
-            // notifyIcon1
+            // commonTrackLapTimesBindingSource
             // 
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(112, 111);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidth = 20;
-            this.dataGridView1.Size = new System.Drawing.Size(847, 401);
-            this.dataGridView1.TabIndex = 4;
+            this.commonTrackLapTimesBindingSource.DataMember = "CommonTrackLapTimes";
+            this.commonTrackLapTimesBindingSource.DataSource = this.twoCarComparissonBindingSource;
             // 
             // twoCarComparissonBindingSource
             // 
             this.twoCarComparissonBindingSource.DataSource = typeof(Assetto_Corsa_CarTimesApp.LogicClasses.ComparrisonTypes.TwoCarComparisson);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
             // 
             // MainForm
             // 
@@ -348,8 +350,8 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.TwoCarComparison_Panel.ResumeLayout(false);
             this.TwoCarComparison_Panel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.commonTrackLapTimesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.commonTrackLapTimesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.twoCarComparissonBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -384,6 +386,7 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.BindingSource commonTrackLapTimesBindingSource;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 
